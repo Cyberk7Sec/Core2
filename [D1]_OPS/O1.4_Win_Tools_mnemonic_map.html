@@ -1,0 +1,245 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:16px 12px 28px;font-family:var(--font-sans)}
+.mnemonic-banner{border-radius:12px;padding:14px 18px;margin-bottom:20px;border:0.5px solid var(--color-border-secondary)}
+.mnemonic-word{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.letter-pill{display:inline-flex;flex-direction:column;align-items:center;border-radius:8px;padding:6px 10px;min-width:48px;border:0.5px solid var(--color-border-tertiary)}
+.lp-letter{font-size:20px;font-weight:500;line-height:1}
+.lp-word{font-size:9px;margin-top:2px;text-align:center;line-height:1.2}
+.groups{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.groups{grid-template-columns:1fr}}
+.group-card{border-radius:12px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.group-head{padding:10px 14px;display:flex;align-items:center;gap:10px}
+.group-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.group-label{font-size:13px;font-weight:500}
+.group-sub{font-size:11px;margin-top:1px}
+.tool-list{padding:8px 0 4px}
+.tool-row{display:flex;align-items:flex-start;gap:8px;padding:5px 14px;cursor:pointer;transition:background .12s}
+.tool-row:hover{background:var(--color-background-secondary)}
+.tool-badge{border-radius:5px;padding:2px 7px;font-size:10px;font-weight:500;flex-shrink:0;font-family:var(--font-mono);margin-top:1px}
+.tool-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.4}
+.tool-name-txt{font-size:12px;font-weight:500;line-height:1.3}
+.shape-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.shape-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0;margin-top:3px}
+.shape-di{width:10px;height:10px;flex-shrink:0;margin-top:3px;transform:rotate(45deg);border-radius:1px}
+.shape-tr{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;flex-shrink:0;margin-top:5px}
+.shape-hex{width:11px;height:10px;flex-shrink:0;margin-top:3px;clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)}
+.tip-bar{border-radius:8px;padding:10px 14px;margin-top:14px;border:0.5px solid var(--color-border-tertiary);font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+
+.pu50{background:#EEEDFE}.pu600{background:#534AB7}.pu800{color:#3C3489}.pu400{background:#7F77DD}
+.te50{background:#E1F5EE}.te600{background:#0F6E56}.te800{color:#085041}.te400{background:#1D9E75}
+.co50{background:#FAECE7}.co600{background:#993C1D}.co800{color:#712B13}.co400{background:#D85A30}
+.bl50{background:#E6F1FB}.bl600{background:#185FA5}.bl800{color:#0C447C}.bl400{background:#378ADD}
+.am50{background:#FAEEDA}.am600{background:#854F0B}.am800{color:#633806}.am400{background:#BA7517}
+
+@media(prefers-color-scheme:dark){
+.pu50{background:#26215C}.pu800{color:#CECBF6}.pu400{background:#534AB7}
+.te50{background:#04342C}.te800{color:#9FE1CB}.te400{background:#0F6E56}
+.co50{background:#4A1B0C}.co800{color:#F5C4B3}.co400{background:#993C1D}
+.bl50{background:#042C53}.bl800{color:#B5D4F4}.bl400{background:#185FA5}
+.am50{background:#412402}.am800{color:#FAC775}.am400{background:#854F0B}
+}
+</style>
+
+<div class="wrap">
+
+<div class="mnemonic-banner pu50" style="border-color:#534AB7">
+  <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Mnemonic — remember the 5 groups with: <span style="font-family:var(--font-mono)">"TEAMS N"</span></div>
+  <div class="mnemonic-word" style="margin-top:10px">
+    <div class="letter-pill pu50" style="border-color:#534AB7"><span class="lp-letter pu800">T</span><span class="lp-word pu800">Task Mgr</span></div>
+    <div style="display:flex;align-items:center;font-size:18px;color:var(--color-text-tertiary);padding:0 2px">+</div>
+    <div class="letter-pill te50" style="border-color:#0F6E56"><span class="lp-letter te800">E</span><span class="lp-word te800">Event Viewer</span></div>
+    <div class="letter-pill te50" style="border-color:#0F6E56"><span class="lp-letter te800">A</span><span class="lp-word te800">Admin .msc</span></div>
+    <div class="letter-pill te50" style="border-color:#0F6E56"><span class="lp-letter te800">M</span><span class="lp-word te800">More .msc</span></div>
+    <div class="letter-pill te50" style="border-color:#0F6E56"><span class="lp-letter te800">S</span><span class="lp-word te800">Sys tools</span></div>
+    <div style="display:flex;align-items:center;font-size:18px;color:var(--color-text-tertiary);padding:0 2px">+</div>
+    <div class="letter-pill am50" style="border-color:#854F0B"><span class="lp-letter am800">N</span><span class="lp-word am800">Network CLI</span></div>
+  </div>
+  <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:8px">"The TEAMS Need network" — purple = Task Mgr alone · green = the 4 MMC/admin tools · amber = network CLI</div>
+</div>
+
+<div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:10px;padding:0 2px">Each group has a unique shape marker so you can scan at a glance. Click any row for a memory hook.</div>
+
+<div class="groups">
+
+  <div class="group-card pu50">
+    <div class="group-head">
+      <div class="group-icon" style="background:#7F77DD"><span style="font-size:18px">&#9679;</span></div>
+      <div>
+        <div class="group-label pu800">● Task Manager</div>
+        <div class="group-sub" style="color:#534AB7">Ctrl+Shift+Esc · LIVE view</div>
+      </div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-dot" style="background:#7F77DD"></div>
+        <div><div class="tool-name-txt pu800">Processes</div><div class="tool-desc" style="display:none">Think: PARTY LIST — who's at the party (running) and how drunk they are (CPU%). Kill crashers here.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-dot" style="background:#7F77DD"></div>
+        <div><div class="tool-name-txt pu800">Performance</div><div class="tool-desc" style="display:none">Think: CAR DASHBOARD — gauges for CPU/RAM/Disk/GPU. Is the engine redlining?</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-dot" style="background:#7F77DD"></div>
+        <div><div class="tool-name-txt pu800">Startup</div><div class="tool-desc" style="display:none">Think: BOUNCER AT THE DOOR — decides who gets in when Windows starts. Disable slow ones to boot faster.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-dot" style="background:#7F77DD"></div>
+        <div><div class="tool-name-txt pu800">Services</div><div class="tool-desc" style="display:none">Think: FACTORY MACHINES running in back. Start/stop background engines like Print Spooler or Windows Update.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-dot" style="background:#7F77DD"></div>
+        <div><div class="tool-name-txt pu800">Users</div><div class="tool-desc" style="display:none">Think: HOTEL REGISTER — who is checked in and how much of the hotel's resources are they using.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-card te50">
+    <div class="group-head">
+      <div class="group-icon" style="background:#1D9E75"><span style="font-size:18px">&#9632;</span></div>
+      <div>
+        <div class="group-label te800">■ MMC snap-ins (.msc)</div>
+        <div class="group-sub" style="color:#0F6E56">Win+R → type command</div>
+      </div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">eventvwr.msc</div><div class="tool-desc" style="display:none">EVENT = EVIDENCE. Black box recorder of Windows. When it crashed, the log here is your crime scene photo. Look under Windows Logs.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">diskmgmt.msc</div><div class="tool-desc" style="display:none">DISK = DRAW A MAP. Visual editor for drive partitions. You see the drives as colored blocks — resize and create territories.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">taskschd.msc</div><div class="tool-desc" style="display:none">TASK SCHEDULER = PERSONAL ASSISTANT with a calendar. "Run this backup every night at 2am." Set it and forget it.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">devmgmt.msc</div><div class="tool-desc" style="display:none">DEV = DEVICES. Roster of every hardware plugged in. Yellow ⚠ = broken driver. Start here for hardware problems.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">certmgr.msc</div><div class="tool-desc" style="display:none">CERT = ID CARD CABINET. Stores the digital certificates browsers use to trust websites and identities.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">lusrmgr.msc</div><div class="tool-desc" style="display:none">LUS = LOCAL USERS. HR system for your PC — create accounts, assign groups, manage who exists locally.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">perfmon.msc</div><div class="tool-desc" style="display:none">PERF MON = SCIENTIFIC DATA LOGGER. Records counters over time. Deeper than Task Manager — saves reports.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-sq" style="background:#1D9E75"></div>
+        <div><div class="tool-name-txt te800">gpedit.msc</div><div class="tool-desc" style="display:none">GP = GROUP POLICY = THE RULEBOOK. Overrides individual settings. Enforce password length, block USB, restrict apps. Pro/Enterprise only.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-card co50">
+    <div class="group-head">
+      <div class="group-icon" style="background:#D85A30"><span style="font-size:18px">&#9670;</span></div>
+      <div>
+        <div class="group-label co800">◆ Extra .exe tools</div>
+        <div class="group-sub" style="color:#993C1D">Win+R → type command</div>
+      </div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-di" style="background:#D85A30"></div>
+        <div><div class="tool-name-txt co800">msinfo32.exe</div><div class="tool-desc" style="display:none">ms·INFO = SPEC SHEET. Just reads everything about your PC. CPU, RAM, BIOS, OS. Use when someone asks "what's your hardware?"</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-di" style="background:#D85A30"></div>
+        <div><div class="tool-name-txt co800">resmon.exe</div><div class="tool-desc" style="display:none">RES·MON = RESOURCE + MONITOR with a MICROSCOPE. Like Task Manager but shows exactly WHICH file/port each process is touching.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-di" style="background:#D85A30"></div>
+        <div><div class="tool-name-txt co800">msconfig.exe</div><div class="tool-desc" style="display:none">ms·CONFIG = SAFE MODE LITE. Control what loads at boot without fully going into safe mode. Great for isolating startup problems.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-di" style="background:#D85A30"></div>
+        <div><div class="tool-name-txt co800">cleanmgr.exe</div><div class="tool-desc" style="display:none">CLEAN·MGR = ROOMBA. Vacuums temp files, recycle bin, old update files. Run "as admin" for deeper system file cleanup.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-di" style="background:#D85A30"></div>
+        <div><div class="tool-name-txt co800">dfrgui.exe</div><div class="tool-desc" style="display:none">D·FRG = DEFRAG = SORT THE BOOKSHELF. Reorganizes HDD data so the read head travels less. Remember: SSDs don't need this!</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-card bl50">
+    <div class="group-head">
+      <div class="group-icon" style="background:#378ADD"><span style="font-size:18px">&#9651;</span></div>
+      <div>
+        <div class="group-label bl800">▲ Disk & registry</div>
+        <div class="group-sub" style="color:#185FA5">CMD as Admin · Handle with care</div>
+      </div>
+    </div>
+    <div class="tool-list">
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-tr" style="border-bottom:10px solid #378ADD"></div>
+        <div><div class="tool-name-txt bl800">regedit.exe</div><div class="tool-desc" style="display:none">REGISTRY = SOURCE CODE of Windows. Every setting lives here as key-value pairs. One wrong delete = broken OS. Always export a backup first!</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-tr" style="border-bottom:10px solid #378ADD"></div>
+        <div><div class="tool-name-txt bl800">chkdsk C: /f /r</div><div class="tool-desc" style="display:none">CHK·DSK = HEALTH INSPECTOR for your drive. /f = fix errors, /r = find bad sectors. Needs a restart. Run when drive acts weird.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-tr" style="border-bottom:10px solid #378ADD"></div>
+        <div><div class="tool-name-txt bl800">diskpart</div><div class="tool-desc" style="display:none">DISK·PART = SCALPEL. Command-line partitioning, more powerful than the GUI. Used in scripts and WinPE recovery. list disk → select disk → clean.</div></div>
+      </div>
+      <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'">
+        <div class="shape-tr" style="border-bottom:10px solid #378ADD"></div>
+        <div><div class="tool-name-txt bl800">sfc /scannow</div><div class="tool-desc" style="display:none">SFC = SYSTEM FILE CHECK = the DOCTOR comparing your files to the originals. Repairs corrupted Windows files automatically. Always run as Admin.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="group-card am50" style="margin-top:10px">
+  <div class="group-head">
+    <div class="group-icon" style="background:#BA7517"><span style="font-size:18px">&#11042;</span></div>
+    <div>
+      <div class="group-label am800">⬡ Network CLI tools</div>
+      <div class="group-sub" style="color:#854F0B">CMD · Use in order when diagnosing no-internet</div>
+    </div>
+  </div>
+  <div class="tool-list" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0">
+    <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:6px"><div class="shape-hex" style="background:#BA7517"></div><div class="tool-name-txt am800">ipconfig</div></div>
+      <div class="tool-desc" style="display:none;font-size:11px;color:var(--color-text-secondary);margin-top:3px">YOUR ADDRESS LABEL. First thing to check. /all for full details, /renew to refresh DHCP.</div>
+    </div>
+    <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:6px"><div class="shape-hex" style="background:#BA7517"></div><div class="tool-name-txt am800">ping</div></div>
+      <div class="tool-desc" style="display:none;font-size:11px;color:var(--color-text-secondary);margin-top:3px">SHOUTING "HELLO" — is the target even reachable? Try ping 8.8.8.8 first (no DNS needed).</div>
+    </div>
+    <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:6px"><div class="shape-hex" style="background:#BA7517"></div><div class="tool-name-txt am800">nslookup</div></div>
+      <div class="tool-desc" style="display:none;font-size:11px;color:var(--color-text-secondary);margin-top:3px">PHONE BOOK OPERATOR — is DNS resolving names to IPs? nslookup google.com</div>
+    </div>
+    <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:6px"><div class="shape-hex" style="background:#BA7517"></div><div class="tool-name-txt am800">tracert</div></div>
+      <div class="tool-desc" style="display:none;font-size:11px;color:var(--color-text-secondary);margin-top:3px">PACKAGE TRACKER — shows every router hop. Find where packets get dropped or slow.</div>
+    </div>
+    <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:6px"><div class="shape-hex" style="background:#BA7517"></div><div class="tool-name-txt am800">netstat</div></div>
+      <div class="tool-desc" style="display:none;font-size:11px;color:var(--color-text-secondary);margin-top:3px">WHO IS YOUR PC ON THE PHONE WITH? Lists all open connections and listening ports right now.</div>
+    </div>
+    <div class="tool-row" onclick="this.querySelector('.tool-desc').style.display=this.querySelector('.tool-desc').style.display==='none'?'block':'none'" style="flex-direction:column;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:6px"><div class="shape-hex" style="background:#BA7517"></div><div class="tool-name-txt am800">net use</div></div>
+      <div class="tool-desc" style="display:none;font-size:11px;color:var(--color-text-secondary);margin-top:3px">PLUG REMOTE FOLDER IN as a local drive letter. net use Z: \\server\share</div>
+    </div>
+  </div>
+</div>
+
+<div class="tip-bar">
+  <span style="font-weight:500;color:var(--color-text-primary)">Shape key — scan without reading:</span>
+  &nbsp; ● dot = Task Mgr &nbsp;|&nbsp; ■ square = MMC .msc &nbsp;|&nbsp; ◆ diamond = Extra .exe &nbsp;|&nbsp; ▲ triangle = Disk/Registry (danger!) &nbsp;|&nbsp; ⬡ hex = Network CLI
+</div>
+
+</div>

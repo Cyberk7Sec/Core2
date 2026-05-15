@@ -1,0 +1,309 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.wrap { padding: 16px 8px 24px; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-secondary); }
+.dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.section { margin-bottom: 20px; border-radius: 12px; overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
+.section-header { padding: 10px 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; }
+.section-header .emoji { font-size: 16px; }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: var(--color-border-tertiary); }
+.tool-card { background: var(--color-background-primary); padding: 10px 12px; cursor: pointer; transition: background 0.15s; }
+.tool-card:hover { background: var(--color-background-secondary); }
+.tool-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; font-family: var(--font-mono); }
+.tool-does { font-size: 11px; color: var(--color-text-secondary); line-height: 1.4; }
+.tool-analogy { font-size: 11px; font-style: italic; margin-top: 3px; }
+
+.purple-h { background: #EEEDFE; color: #3C3489; }
+.purple-b { background: #F5F4FE; }
+.purple-dot { background: #7F77DD; }
+.purple-a { color: #534AB7; }
+
+.teal-h { background: #E1F5EE; color: #085041; }
+.teal-b { background: #F0FAF6; }
+.teal-dot { background: #1D9E75; }
+.teal-a { color: #0F6E56; }
+
+.coral-h { background: #FAECE7; color: #4A1B0C; }
+.coral-b { background: #FDF5F2; }
+.coral-dot { background: #D85A30; }
+.coral-a { color: #993C1D; }
+
+.blue-h { background: #E6F1FB; color: #042C53; }
+.blue-b { background: #F3F8FD; }
+.blue-dot { background: #378ADD; }
+.blue-a { color: #185FA5; }
+
+.amber-h { background: #FAEEDA; color: #412402; }
+.amber-b { background: #FDF7EE; }
+.amber-dot { background: #BA7517; }
+.amber-a { color: #854F0B; }
+
+@media (prefers-color-scheme: dark) {
+  .purple-h { background: #26215C; color: #CECBF6; }
+  .purple-b { background: #1e1a48; }
+  .purple-a { color: #AFA9EC; }
+
+  .teal-h { background: #04342C; color: #9FE1CB; }
+  .teal-b { background: #03291f; }
+  .teal-a { color: #5DCAA5; }
+
+  .coral-h { background: #4A1B0C; color: #F5C4B3; }
+  .coral-b { background: #3a1308; }
+  .coral-a { color: #F0997B; }
+
+  .blue-h { background: #042C53; color: #B5D4F4; }
+  .blue-b { background: #032244; }
+  .blue-a { color: #85B7EB; }
+
+  .amber-h { background: #412402; color: #FAC775; }
+  .amber-b { background: #331c01; }
+  .amber-a { color: #EF9F27; }
+
+  .tool-card { background: var(--color-background-primary); }
+  .tool-card:hover { background: var(--color-background-secondary); }
+}
+
+.detail-panel { display: none; margin-top: 0; padding: 14px 14px 14px; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+.detail-panel.open { display: block; }
+.detail-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; color: var(--color-text-primary); }
+.detail-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.close-btn { float: right; font-size: 11px; cursor: pointer; color: var(--color-text-tertiary); border: 0.5px solid var(--color-border-secondary); border-radius: 4px; padding: 2px 6px; }
+.close-btn:hover { color: var(--color-text-primary); }
+.tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 4px; margin-right: 4px; margin-bottom: 4px; font-weight: 500; }
+.page-title { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 16px; }
+</style>
+
+<div class="wrap">
+  <h2 class="page-title">🗂️ Windows tools — what does what</h2>
+  <p class="page-sub">Click any tool to see what it does, its shortcut, and a real-world analogy. Grouped by purpose.</p>
+
+  <div class="legend">
+    <div class="leg"><div class="dot purple-dot"></div> Task Manager family</div>
+    <div class="leg"><div class="dot teal-dot"></div> MMC snap-ins (.msc)</div>
+    <div class="leg"><div class="dot coral-dot"></div> System info & config (.exe)</div>
+    <div class="leg"><div class="dot blue-dot"></div> Disk & registry tools</div>
+    <div class="leg"><div class="dot amber-dot"></div> Network command line</div>
+  </div>
+
+  <div id="detail-panel" class="detail-panel">
+    <button class="close-btn" onclick="closeDetail()">✕ close</button>
+    <div class="detail-title" id="d-name"></div>
+    <div class="detail-text" id="d-body"></div>
+  </div>
+
+  <!-- GROUP 1: Task Manager -->
+  <div class="section">
+    <div class="section-header purple-h">
+      <span class="emoji">⚡</span>
+      Task Manager — <span style="font-family:var(--font-mono);font-size:12px;margin-left:4px">Ctrl + Shift + Esc</span>
+      <span style="margin-left:auto;font-size:11px;opacity:.7">Live snapshot of your PC right now</span>
+    </div>
+    <div class="tools-grid purple-b">
+      <div class="tool-card" onclick="show('Processes tab','Shows every running app and background process. Think of it as the <b>flight board at an airport</b> — every "flight" (process) using CPU/RAM is listed. Kill a frozen app here.','<span class=tag style=background:#EEEDFE;color:#3C3489>CPU %</span><span class=tag style=background:#EEEDFE;color:#3C3489>RAM</span><span class=tag style=background:#EEEDFE;color:#3C3489>End Task</span>')">
+        <div class="tool-name purple-a">Processes</div>
+        <div class="tool-does">All running apps & background tasks</div>
+        <div class="tool-analogy purple-a">✈️ Flight board of your PC</div>
+      </div>
+      <div class="tool-card" onclick="show('Performance tab','Live graphs for CPU, RAM, Disk, GPU, and Network. Think of it as the <b>dashboard gauges in a car</b> — at a glance you see if any resource is redlining.','<span class=tag style=background:#EEEDFE;color:#3C3489>CPU graph</span><span class=tag style=background:#EEEDFE;color:#3C3489>RAM usage</span><span class=tag style=background:#EEEDFE;color:#3C3489>Disk I/O</span>')">
+        <div class="tool-name purple-a">Performance</div>
+        <div class="tool-does">Live CPU / RAM / Disk / GPU graphs</div>
+        <div class="tool-analogy purple-a">🚗 Dashboard gauges</div>
+      </div>
+      <div class="tool-card" onclick="show('Startup tab (Task Manager)','Lists every program that auto-launches when Windows starts. <b>Disabling slow ones here speeds up boot.</b> Like a bouncer deciding who gets through the door at startup.','<span class=tag style=background:#EEEDFE;color:#3C3489>Enable/Disable</span><span class=tag style=background:#EEEDFE;color:#3C3489>Startup impact</span>')">
+        <div class="tool-name purple-a">Startup</div>
+        <div class="tool-does">Apps that auto-launch at boot</div>
+        <div class="tool-analogy purple-a">🚪 Boot-time bouncer</div>
+      </div>
+      <div class="tool-card" onclick="show('Services tab (Task Manager)','Shows Windows background services (like Windows Update, print spooler). You can start/stop them here. Like <b>checking which factory machines are running</b> in the background.','<span class=tag style=background:#EEEDFE;color:#3C3489>Start</span><span class=tag style=background:#EEEDFE;color:#3C3489>Stop</span><span class=tag style=background:#EEEDFE;color:#3C3489>Open Services</span>')">
+        <div class="tool-name purple-a">Services</div>
+        <div class="tool-does">Background Windows services</div>
+        <div class="tool-analogy purple-a">🏭 Background factory machines</div>
+      </div>
+      <div class="tool-card" onclick="show('Users tab (Task Manager)','Shows all logged-in users and how much CPU/RAM each is consuming. Useful on shared or multi-session machines.','<span class=tag style=background:#EEEDFE;color:#3C3489>Disconnect user</span><span class=tag style=background:#EEEDFE;color:#3C3489>Resource per user</span>')">
+        <div class="tool-name purple-a">Users</div>
+        <div class="tool-does">Who's logged in & their resource use</div>
+        <div class="tool-analogy purple-a">👥 Hotel guest list</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP 2: MMC Snap-ins -->
+  <div class="section">
+    <div class="section-header teal-h">
+      <span class="emoji">🧰</span>
+      MMC snap-ins — type in Run (Win+R)
+      <span style="margin-left:auto;font-size:11px;opacity:.7">Deep admin controls, each a specialist</span>
+    </div>
+    <div class="tools-grid teal-b">
+      <div class="tool-card" onclick="show('eventvwr.msc — Event Viewer','The <b>black box recorder of Windows</b>. Logs every error, warning, and info event. When something crashes, this is where the crash report lives. Look under Windows Logs → System or Application.','<span class=tag style=background:#E1F5EE;color:#085041>Error logs</span><span class=tag style=background:#E1F5EE;color:#085041>Crash reports</span><span class=tag style=background:#E1F5EE;color:#085041>Security events</span>')">
+        <div class="tool-name teal-a">eventvwr.msc</div>
+        <div class="tool-does">Event Viewer — system error & event logs</div>
+        <div class="tool-analogy teal-a">✈️ Black box flight recorder</div>
+      </div>
+      <div class="tool-card" onclick="show('diskmgmt.msc — Disk Management','Visual tool to create, delete, resize, and format disk partitions. Like a <b>map editor for your hard drive</b> — you draw new territories (partitions) or merge old ones.','<span class=tag style=background:#E1F5EE;color:#085041>Partitions</span><span class=tag style=background:#E1F5EE;color:#085041>Format</span><span class=tag style=background:#E1F5EE;color:#085041>Drive letters</span>')">
+        <div class="tool-name teal-a">diskmgmt.msc</div>
+        <div class="tool-does">Disk Management — partitions & drives</div>
+        <div class="tool-analogy teal-a">🗺️ Hard drive map editor</div>
+      </div>
+      <div class="tool-card" onclick="show('taskschd.msc — Task Scheduler','Programs a task to run automatically at a time or trigger (like daily at 3am). Like a <b>personal assistant with a calendar</b> — "run this backup every night."','<span class=tag style=background:#E1F5EE;color:#085041>Triggers</span><span class=tag style=background:#E1F5EE;color:#085041>Actions</span><span class=tag style=background:#E1F5EE;color:#085041>Automated jobs</span>')">
+        <div class="tool-name teal-a">taskschd.msc</div>
+        <div class="tool-does">Task Scheduler — automate timed tasks</div>
+        <div class="tool-analogy teal-a">📅 Personal assistant with a calendar</div>
+      </div>
+      <div class="tool-card" onclick="show('devmgmt.msc — Device Manager','Shows all hardware and their drivers. <b>Yellow ⚠️ = driver problem.</b> Like a <b>roster of every device plugged into your PC</b> and whether they're working properly.','<span class=tag style=background:#E1F5EE;color:#085041>Driver updates</span><span class=tag style=background:#E1F5EE;color:#085041>Enable/Disable</span><span class=tag style=background:#E1F5EE;color:#085041>⚠️ Errors</span>')">
+        <div class="tool-name teal-a">devmgmt.msc</div>
+        <div class="tool-does">Device Manager — hardware & drivers</div>
+        <div class="tool-analogy teal-a">🔌 Hardware roster with health check</div>
+      </div>
+      <div class="tool-card" onclick="show('certmgr.msc — Certificate Manager','Manages SSL/TLS certificates on the machine. Like a <b>filing cabinet of ID cards</b> — browsers and apps check these to verify trusted sites and identities.','<span class=tag style=background:#E1F5EE;color:#085041>Trusted Root</span><span class=tag style=background:#E1F5EE;color:#085041>Personal certs</span><span class=tag style=background:#E1F5EE;color:#085041>Security</span>')">
+        <div class="tool-name teal-a">certmgr.msc</div>
+        <div class="tool-does">Certificate Manager — SSL/TLS certs</div>
+        <div class="tool-analogy teal-a">🪪 Filing cabinet of ID cards</div>
+      </div>
+      <div class="tool-card" onclick="show('lusrmgr.msc — Local Users & Groups','Create, delete, and manage local user accounts and group memberships. Like an <b>HR system for your PC</b> — who has an account, what group are they in.','<span class=tag style=background:#E1F5EE;color:#085041>Add user</span><span class=tag style=background:#E1F5EE;color:#085041>Groups</span><span class=tag style=background:#E1F5EE;color:#085041>Passwords</span>')">
+        <div class="tool-name teal-a">lusrmgr.msc</div>
+        <div class="tool-does">Local Users & Groups — accounts</div>
+        <div class="tool-analogy teal-a">🏢 HR system for your PC</div>
+      </div>
+      <div class="tool-card" onclick="show('perfmon.msc — Performance Monitor','Records detailed performance counters over time — more powerful than Task Manager Performance tab. Like a <b>scientific data logger</b> that tracks specific metrics and saves them as reports.','<span class=tag style=background:#E1F5EE;color:#085041>Counters</span><span class=tag style=background:#E1F5EE;color:#085041>Data sets</span><span class=tag style=background:#E1F5EE;color:#085041>Reports</span>')">
+        <div class="tool-name teal-a">perfmon.msc</div>
+        <div class="tool-does">Performance Monitor — deep metrics logging</div>
+        <div class="tool-analogy teal-a">📊 Scientific performance data logger</div>
+      </div>
+      <div class="tool-card" onclick="show('gpedit.msc — Group Policy Editor','Controls hundreds of Windows settings at a policy level — enforce password rules, disable USB, restrict apps. Like the <b>company rulebook that overrides individual preferences</b>. Only on Pro/Enterprise.','<span class=tag style=background:#E1F5EE;color:#085041>Pro/Enterprise only</span><span class=tag style=background:#E1F5EE;color:#085041>Security policy</span><span class=tag style=background:#E1F5EE;color:#085041>Restrictions</span>')">
+        <div class="tool-name teal-a">gpedit.msc</div>
+        <div class="tool-does">Group Policy Editor — enforce rules</div>
+        <div class="tool-analogy teal-a">📋 Company rulebook (overrides everything)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP 3: Additional .exe tools -->
+  <div class="section">
+    <div class="section-header coral-h">
+      <span class="emoji">🔧</span>
+      Additional tools (.exe) — type in Run (Win+R)
+      <span style="margin-left:auto;font-size:11px;opacity:.7">System info, config & cleanup</span>
+    </div>
+    <div class="tools-grid coral-b">
+      <div class="tool-card" onclick="show('msinfo32.exe — System Information','One-stop dump of everything about your hardware and software: CPU, RAM, BIOS version, OS info. Like a <b>spec sheet printout of your whole computer</b>.','<span class=tag style=background:#FAECE7;color:#4A1B0C>Hardware specs</span><span class=tag style=background:#FAECE7;color:#4A1B0C>BIOS info</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Installed components</span>')">
+        <div class="tool-name coral-a">msinfo32.exe</div>
+        <div class="tool-does">System Information — full PC spec dump</div>
+        <div class="tool-analogy coral-a">📄 Spec sheet for everything in your PC</div>
+      </div>
+      <div class="tool-card" onclick="show('resmon.exe — Resource Monitor','More detailed than Task Manager — shows exactly which process is using which files, network connections, or disk reads. Like a <b>traffic camera with license plates</b> — not just traffic volume, but who exactly is causing it.','<span class=tag style=background:#FAECE7;color:#4A1B0C>Per-process disk</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Network by app</span><span class=tag style=background:#FAECE7;color:#4A1B0C>File handles</span>')">
+        <div class="tool-name coral-a">resmon.exe</div>
+        <div class="tool-does">Resource Monitor — detailed resource drill-down</div>
+        <div class="tool-analogy coral-a">📷 Traffic cam with license plates</div>
+      </div>
+      <div class="tool-card" onclick="show('msconfig.exe — System Configuration','Controls which services and startup items load at boot, and lets you switch between Normal/Diagnostic/Selective startup. Classic tool for <b>safe-mode-style troubleshooting without going fully into safe mode</b>.','<span class=tag style=background:#FAECE7;color:#4A1B0C>Boot options</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Startup</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Safe boot</span>')">
+        <div class="tool-name coral-a">msconfig.exe</div>
+        <div class="tool-does">System Config — boot & startup settings</div>
+        <div class="tool-analogy coral-a">🧪 Safe-mode-lite for troubleshooting</div>
+      </div>
+      <div class="tool-card" onclick="show('cleanmgr.exe — Disk Cleanup','Finds and deletes temp files, recycle bin contents, old Windows update files. Like a <b>Roomba that vacuums up disk junk</b>.','<span class=tag style=background:#FAECE7;color:#4A1B0C>Temp files</span><span class=tag style=background:#FAECE7;color:#4A1B0C>WinSxS cleanup</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Free up space</span>')">
+        <div class="tool-name coral-a">cleanmgr.exe</div>
+        <div class="tool-does">Disk Cleanup — remove junk files</div>
+        <div class="tool-analogy coral-a">🤖 Roomba for disk junk</div>
+      </div>
+      <div class="tool-card" onclick="show('dfrgui.exe — Disk Defragment','Reorganizes HDD data for faster access (HDDs only — SSDs don\'t need this). Like <b>sorting a messy bookshelf</b> so the librarian can grab books faster.','<span class=tag style=background:#FAECE7;color:#4A1B0C>HDD only</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Optimize drives</span><span class=tag style=background:#FAECE7;color:#4A1B0C>Schedule</span>')">
+        <div class="tool-name coral-a">dfrgui.exe</div>
+        <div class="tool-does">Disk Defragment — reorganize HDD data</div>
+        <div class="tool-analogy coral-a">📚 Sorting a messy bookshelf (HDD only!)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP 4: Registry + Disk CLI -->
+  <div class="section">
+    <div class="section-header blue-h">
+      <span class="emoji">💽</span>
+      Registry & disk tools — high risk, high power
+      <span style="margin-left:auto;font-size:11px;opacity:.7">Edit with caution!</span>
+    </div>
+    <div class="tools-grid blue-b">
+      <div class="tool-card" onclick="show('regedit.exe — Registry Editor','The Windows configuration database — every setting from OS to apps lives here as keys and values. <b>One wrong delete can break Windows.</b> Like <b>editing the source code of your OS</b>. Always export a backup before changing anything.','<span class=tag style=background:#E6F1FB;color:#042C53>⚠️ Dangerous</span><span class=tag style=background:#E6F1FB;color:#042C53>HKEY_LOCAL_MACHINE</span><span class=tag style=background:#E6F1FB;color:#042C53>Export before editing</span>')">
+        <div class="tool-name blue-a">regedit.exe</div>
+        <div class="tool-does">Registry Editor — OS settings database</div>
+        <div class="tool-analogy blue-a">⚠️ Editing the source code of Windows</div>
+      </div>
+      <div class="tool-card" onclick="show('chkdsk — Check Disk','Scans a drive for file system errors and bad sectors. Like a <b>health inspector for your drive</b>. Run as: <code>chkdsk C: /f /r</code> — /f fixes errors, /r finds bad sectors.','<span class=tag style=background:#E6F1FB;color:#042C53>chkdsk C: /f /r</span><span class=tag style=background:#E6F1FB;color:#042C53>Requires restart</span><span class=tag style=background:#E6F1FB;color:#042C53>Fixes errors</span>')">
+        <div class="tool-name blue-a">chkdsk</div>
+        <div class="tool-does">Check Disk — scan & fix drive errors</div>
+        <div class="tool-analogy blue-a">🔍 Health inspector for your drive</div>
+      </div>
+      <div class="tool-card" onclick="show('diskpart — Disk Partition CLI','Command-line disk partitioning tool — more powerful than Disk Management GUI. Used for scripts, WinPE, and complex setups. Like <b>surgery on your drive with a scalpel</b> instead of a UI.','<span class=tag style=background:#E6F1FB;color:#042C53>list disk</span><span class=tag style=background:#E6F1FB;color:#042C53>select disk</span><span class=tag style=background:#E6F1FB;color:#042C53>clean / create</span>')">
+        <div class="tool-name blue-a">diskpart</div>
+        <div class="tool-does">CLI disk partitioning — powerful & scriptable</div>
+        <div class="tool-analogy blue-a">🔬 Scalpel-level drive surgery</div>
+      </div>
+      <div class="tool-card" onclick="show('sfc — System File Checker','Scans Windows system files for corruption and restores them from a cached copy. Run as: <code>sfc /scannow</code>. Like a <b>doctor that compares your files to the originals</b> and replaces any corrupted ones.','<span class=tag style=background:#E6F1FB;color:#042C53>sfc /scannow</span><span class=tag style=background:#E6F1FB;color:#042C53>Restore files</span><span class=tag style=background:#E6F1FB;color:#042C53>Needs Admin</span>')">
+        <div class="tool-name blue-a">sfc /scannow</div>
+        <div class="tool-does">System File Checker — fix corrupted OS files</div>
+        <div class="tool-analogy blue-a">🩺 Doctor comparing files to originals</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP 5: Network CLI -->
+  <div class="section">
+    <div class="section-header amber-h">
+      <span class="emoji">🌐</span>
+      Network command-line tools
+      <span style="margin-left:auto;font-size:11px;opacity:.7">Diagnose connectivity from cmd/PowerShell</span>
+    </div>
+    <div class="tools-grid amber-b">
+      <div class="tool-card" onclick="show('ipconfig','Shows your IP address, subnet mask, gateway, and DNS. <b>First tool to run when you have no internet.</b> <code>ipconfig /all</code> = full details. Like checking the <b>address label on your PC</b>.','<span class=tag style=background:#FAEEDA;color:#412402>ipconfig /all</span><span class=tag style=background:#FAEEDA;color:#412402>ipconfig /release</span><span class=tag style=background:#FAEEDA;color:#412402>ipconfig /renew</span>')">
+        <div class="tool-name amber-a">ipconfig</div>
+        <div class="tool-does">Show IP address, gateway, DNS config</div>
+        <div class="tool-analogy amber-a">🏷️ Your PC's address label</div>
+      </div>
+      <div class="tool-card" onclick="show('ping','Sends a test packet to an address and times the response. <b>Is the target reachable?</b> Like shouting "hello!" across a room — if you get a response, the connection works.','<span class=tag style=background:#FAEEDA;color:#412402>ping 8.8.8.8</span><span class=tag style=background:#FAEEDA;color:#412402>ping google.com</span><span class=tag style=background:#FAEEDA;color:#412402>ms latency</span>')">
+        <div class="tool-name amber-a">ping</div>
+        <div class="tool-does">Test if a host is reachable & measure latency</div>
+        <div class="tool-analogy amber-a">📣 Shouting "hello!" across the network</div>
+      </div>
+      <div class="tool-card" onclick="show('nslookup','Queries a DNS server to resolve a hostname to IP (or reverse). <b>Is DNS working? What IP does google.com resolve to?</b> Like asking the <b>phone book operator for an address</b>.','<span class=tag style=background:#FAEEDA;color:#412402>nslookup google.com</span><span class=tag style=background:#FAEEDA;color:#412402>DNS troubleshoot</span>')">
+        <div class="tool-name amber-a">nslookup</div>
+        <div class="tool-does">Resolve hostnames via DNS lookup</div>
+        <div class="tool-analogy amber-a">📖 Phone book operator for IPs</div>
+      </div>
+      <div class="tool-card" onclick="show('tracert','Traces the route packets take from your PC to a destination, showing each hop (router). <b>Where is the connection slowing down or failing?</b> Like tracking a package and seeing which depot it got stuck at.','<span class=tag style=background:#FAEEDA;color:#412402>tracert google.com</span><span class=tag style=background:#FAEEDA;color:#412402>Hops</span><span class=tag style=background:#FAEEDA;color:#412402>Find bottleneck</span>')">
+        <div class="tool-name amber-a">tracert</div>
+        <div class="tool-does">Trace route — find where packets get stuck</div>
+        <div class="tool-analogy amber-a">📦 Package tracking through every depot</div>
+      </div>
+      <div class="tool-card" onclick="show('netstat','Shows all active network connections and listening ports. <b>What is connecting to/from your PC right now?</b> Like checking who your PC is currently "on the phone" with.','<span class=tag style=background:#FAEEDA;color:#412402>netstat -an</span><span class=tag style=background:#FAEEDA;color:#412402>Open ports</span><span class=tag style=background:#FAEEDA;color:#412402>Active connections</span>')">
+        <div class="tool-name amber-a">netstat</div>
+        <div class="tool-does">Show active connections & open ports</div>
+        <div class="tool-analogy amber-a">📞 Who is your PC on the phone with?</div>
+      </div>
+      <div class="tool-card" onclick="show('net use','Maps a network drive to a drive letter, or disconnects one. Example: <code>net use Z: \\\\server\\share</code>. Like plugging a <b>remote folder in as a fake local drive</b>.','<span class=tag style=background:#FAEEDA;color:#412402>net use Z:</span><span class=tag style=background:#FAEEDA;color:#412402>Map drives</span><span class=tag style=background:#FAEEDA;color:#412402>net use * /delete</span>')">
+        <div class="tool-name amber-a">net use</div>
+        <div class="tool-does">Map / disconnect network drives</div>
+        <div class="tool-analogy amber-a">🗂️ Plug remote folder in as a local drive</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:11px;color:var(--color-text-tertiary);margin-top:8px;text-align:center">Click any card to expand details · Press ✕ to close</p>
+</div>
+
+<script>
+function show(name, body, tags) {
+  var p = document.getElementById('detail-panel');
+  var n = document.getElementById('d-name');
+  var b = document.getElementById('d-body');
+  n.textContent = name;
+  b.innerHTML = (tags ? '<div style="margin-bottom:8px">' + tags + '</div>' : '') + body;
+  p.classList.add('open');
+  p.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+}
+</script>
